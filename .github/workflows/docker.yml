@@ -10,34 +10,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.2
-        with:
-          persist-credentials: false
           
       - name: Install and Build
         uses: actions/setup-node@v3.3.0
-              
-      - uses: actions/cache@v2
         with:
-          path: |
-            ${{ github.workspace }}/node_modules
-            ${{ github.workspace }}/.next/cache
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-   
-            
-      - run: npm install
-      - run: npm run build
-      - run: npm run export
-        env:
-          CI: true
-          DEPLOY_TARGET: gh-pages
-      - run: touch out/.nojekyll
+          node-version: "lts/*"
+          cache: "yarn"
 
+      - name: Build
+        run: |
+          npm i
+          npm run build
+          npm run export
+      
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          BRANCH: gh-pages  # 배포될 브랜치
-          FOLDER: out # 이 폴더에 있는 파일을 배포
-          CLEAN: true
+          deploy_key: ${{ secrets.DEPLOY_TOKEN }}
+          publish_dir: ./out
