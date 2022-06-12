@@ -50,7 +50,7 @@ export const sudo = async (args?: string[]): Promise<string> => {
 };
 
 export const repo = async (args?: string[]): Promise<string> => {
-  window.open('https://github.com/m4tt72/terminal', '_blank');
+  window.open('https://github.com/rrrmaster/rrrmaster-terminal-page', '_blank');
 
   return 'Opening repository...';
 };
