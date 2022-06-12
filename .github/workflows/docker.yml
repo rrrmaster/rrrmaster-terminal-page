@@ -15,19 +15,18 @@ jobs:
           
       - name: Install and Build
         uses: actions/setup-node@v3.3.0
-        
-      - run: npm install
-      
+              
       - uses: actions/cache@v2
-        id: yarn-cache
         with:
           path: |
-            ~/.npm
-            ${{ github.workspace }}/.next/cache'
+            ${{ github.workspace }}/node_modules
+            ${{ github.workspace }}/.next/cache
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-           
+            ${{ runner.os }}-yarn-   
+            
+      - run: npm install
       - run: npm run build
       - run: npm run export
         env:
